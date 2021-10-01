@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
   s.source       = { :path => "." }
   s.source_files = "ios", "ios/**/*.{h,m}"
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
 end
