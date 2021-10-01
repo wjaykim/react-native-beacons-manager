@@ -59,4 +59,5 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
     implementation 'com.intellij:annotations:+@jar'
     implementation 'org.altbeacon:android-beacon-library:2.19'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }
