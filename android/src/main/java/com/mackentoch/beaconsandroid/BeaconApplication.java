@@ -3,9 +3,12 @@ package com.mackentoch.beaconsandroid;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ProcessLifecycleOwner;
+
+import com.facebook.react.HeadlessJsTaskService;
 
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.MonitorNotifier;
@@ -31,6 +34,7 @@ public class BeaconApplication extends Application {
 
     @Override
     public void didDetermineStateForRegion(int i, Region region) {
+      Log.d("sibal", region.getId3() + " " + i);
       if (isAppOnBackground()) {
         String state = "unknown";
         switch (i) {
@@ -46,6 +50,7 @@ public class BeaconApplication extends Application {
         Intent service = new Intent(getApplicationContext(), BeaconHeadlessService.class);
         service.putExtras(getBundleFromRegion(region, state));
         getApplicationContext().startService(service);
+        HeadlessJsTaskService.acquireWakeLockNow(getApplicationContext());
       }
     }
   };
