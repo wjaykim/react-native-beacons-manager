@@ -14,6 +14,9 @@ declare module 'react-native-beacons-manager' {
     | 'notDetermined'
     | 'restricted';
 
+  export interface BackgroundMonitorEvent extends BeaconRegion {
+    state: 'inside' | 'outside';
+  }
   class Beacons {
     ///////////////////////////////////////////////////////
     // iOS only
