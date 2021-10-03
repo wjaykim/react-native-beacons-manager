@@ -1,8 +1,8 @@
 package com.mackentoch.beaconsandroid;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ProcessLifecycleOwner;
@@ -12,9 +12,7 @@ import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.Region;
 import org.jetbrains.annotations.Nullable;
 
-public class BeaconApplication extends Application implements BeaconMonitor {
-
-  private static final String LOG_TAG = "BeaconsAndroidModule";
+public class BeaconApplication extends Application {
 
   @Override
   public void onCreate() {
@@ -25,16 +23,10 @@ public class BeaconApplication extends Application implements BeaconMonitor {
   private final MonitorNotifier mMonitorNotifier = new MonitorNotifier() {
     @Override
     public void didEnterRegion(Region region) {
-      if (isAppOnBackground()) {
-        BeaconApplication.this.didEnterRegion(getBundleFromRegion(region, null));
-      }
     }
 
     @Override
     public void didExitRegion(Region region) {
-      if (isAppOnBackground()) {
-        BeaconApplication.this.didExitRegion(getBundleFromRegion(region, null));
-      }
     }
 
     @Override
@@ -51,7 +43,9 @@ public class BeaconApplication extends Application implements BeaconMonitor {
           default:
             break;
         }
-        BeaconApplication.this.didDetermineStateForRegion(getBundleFromRegion(region, state));
+        Intent service = new Intent(getApplicationContext(), BeaconHeadlessService.class);
+        service.putExtras(getBundleFromRegion(region, state));
+        getApplicationContext().startService(service);
       }
     }
   };
@@ -70,20 +64,5 @@ public class BeaconApplication extends Application implements BeaconMonitor {
       bundle.putString("state", state);
     }
     return bundle;
-  }
-
-  @Override
-  public void didEnterRegion(Bundle bundle) {
-    Log.d(LOG_TAG, "BeaconApplication - didEnterRegion");
-  }
-
-  @Override
-  public void didExitRegion(Bundle bundle) {
-    Log.d(LOG_TAG, "BeaconApplication - didExitRegion");
-  }
-
-  @Override
-  public void didDetermineStateForRegion(Bundle bundle) {
-    Log.d(LOG_TAG, "BeaconApplication - didDetermineStateForRegion");
   }
 }

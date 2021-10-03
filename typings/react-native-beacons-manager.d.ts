@@ -149,6 +149,10 @@ declare module 'react-native-beacons-manager' {
     requestStateForRegion(
       region: BeaconRegion
     ): void;
+
+    setBackgroundMonitorHandler(
+      handler: (event: BackgroundMonitorEvent) => Promise<void>
+    ): void;
   }
 
   const beacons: Beacons;
