@@ -287,10 +287,15 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
    * Ranging
    **********************************************************************************************/
   @ReactMethod
-  public void startRanging(String regionId, String beaconUuid, Callback resolve, Callback reject) {
+  public void startRanging(String regionId, String beaconUuid, int minor, int major, Callback resolve, Callback reject) {
     Log.d(LOG_TAG, "startRanging, rangingRegionId: " + regionId + ", rangingBeaconUuid: " + beaconUuid);
     try {
-      Region region = createRegion(regionId, beaconUuid);
+      Region region = createRegion(
+        regionId,
+        beaconUuid,
+        String.valueOf(minor).equals("-1") ? "" : String.valueOf(minor),
+        String.valueOf(major).equals("-1") ? "" : String.valueOf(major)
+      );
       mBeaconManager.startRangingBeacons(region);
       resolve.invoke();
     } catch (Exception e) {
@@ -350,8 +355,13 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void stopRanging(String regionId, String beaconUuid, Callback resolve, Callback reject) {
-    Region region = createRegion(regionId, beaconUuid);
+  public void stopRanging(String regionId, String beaconUuid, int minor, int major, Callback resolve, Callback reject) {
+    Region region = createRegion(
+      regionId,
+      beaconUuid,
+      String.valueOf(minor).equals("-1") ? "" : String.valueOf(minor),
+      String.valueOf(major).equals("-1") ? "" : String.valueOf(major)
+    );
     try {
       mBeaconManager.stopRangingBeacons(region);
       resolve.invoke();
