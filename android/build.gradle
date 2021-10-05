@@ -1,62 +1,64 @@
 buildscript {
-    if (project == rootProject) {
-        repositories {
-            google()
-            mavenCentral()
-        }
-
-        dependencies {
-            classpath 'com.android.tools.build:gradle:4.2.2'
-        }
+  if (project == rootProject) {
+    repositories {
+      google()
+      mavenCentral()
     }
+
+    dependencies {
+      classpath 'com.android.tools.build:gradle:4.2.2'
+    }
+  }
 }
 
 apply plugin: 'com.android.library'
 
 def safeExtGet(prop, fallback) {
-    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
 android {
-    compileSdkVersion safeExtGet('Beacons_compileSdkVersion', 30)
-    buildToolsVersion safeExtGet('Beacons_buildToolsVersion', '30.0.2')
-    defaultConfig {
-        minSdkVersion safeExtGet('Beacons_minSdkVersion', 21)
-        targetSdkVersion safeExtGet('Beacons_targetSdkVersion', 30)
-        versionCode 1
-        versionName "1.0"
+  compileSdkVersion safeExtGet('Beacons_compileSdkVersion', 30)
+  buildToolsVersion safeExtGet('Beacons_buildToolsVersion', '30.0.2')
+  defaultConfig {
+    minSdkVersion safeExtGet('Beacons_minSdkVersion', 21)
+    targetSdkVersion safeExtGet('Beacons_targetSdkVersion', 30)
+    versionCode 1
+    versionName "1.0"
 
-    }
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
+  buildTypes {
+    release {
+      minifyEnabled false
     }
-    lintOptions {
-        disable 'GradleCompatible'
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  }
+  lintOptions {
+    disable 'GradleCompatible'
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 repositories {
-    mavenLocal()
-    maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url("$rootDir/../node_modules/react-native/android")
-    }
-    google()
-    mavenCentral()
+  mavenLocal()
+  maven {
+    // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+    url("$rootDir/../node_modules/react-native/android")
+  }
+  google()
+  mavenCentral()
 }
 
 
 dependencies {
-    //noinspection GradleDynamicVersion
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.facebook.react:react-native:+'
-    implementation 'org.altbeacon:android-beacon-library:2.19'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+  //noinspection GradleDynamicVersion
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.facebook.react:react-native:+'
+  implementation 'org.altbeacon:android-beacon-library:2.19'
+  implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+  implementation 'androidx.work:work-runtime:2.6.0'
+  implementation 'androidx.concurrent:concurrent-futures:1.1.0'
 }
