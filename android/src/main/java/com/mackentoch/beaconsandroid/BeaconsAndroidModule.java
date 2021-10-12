@@ -315,8 +315,10 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
 
   private WritableMap createRangingResponse(Collection<Beacon> beacons, Region region) {
     WritableMap map = new WritableNativeMap();
-    map.putString("identifier", region.getUniqueId());
-    map.putString("uuid", region.getId1() != null ? region.getId1().toString() : "");
+    WritableMap r = new WritableNativeMap();
+    r.putString("identifier", region.getUniqueId());
+    r.putString("uuid", region.getId1() != null ? region.getId1().toString() : "");
+    map.putMap("region", r);
     WritableArray a = new WritableNativeArray();
     for (Beacon beacon : beacons) {
       WritableMap b = new WritableNativeMap();
