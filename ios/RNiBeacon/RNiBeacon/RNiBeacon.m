@@ -218,6 +218,17 @@ RCT_EXPORT_METHOD(getMonitoredRegions:(RCTResponseSenderBlock)callback)
   callback(@[regionArray]);
 }
 
+RCT_EXPORT_METHOD(getRangedRegions:(RCTResponseSenderBlock)callback)
+{
+  NSMutableArray *regionArray = [[NSMutableArray alloc] init];
+
+  for (CLBeaconRegion *region in self.locationManager.rangedRegions) {
+    [regionArray addObject: [self convertBeaconRegionToDict: region]];
+  }
+
+  callback(@[regionArray]);
+}
+
 RCT_EXPORT_METHOD(startMonitoringForRegion:(NSDictionary *) dict)
 {
   [self.locationManager startMonitoringForRegion:[self convertDictToBeaconRegion:dict]];
