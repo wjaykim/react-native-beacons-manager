@@ -196,7 +196,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
     WritableArray array = new WritableNativeArray();
     for (Region region : mBeaconManager.getRangedRegions()) {
       WritableMap map = new WritableNativeMap();
-      map.putString("region", region.getUniqueId());
+      map.putString("identifier", region.getUniqueId());
       map.putString("uuid", region.getId1().toString());
       array.pushMap(map);
     }
