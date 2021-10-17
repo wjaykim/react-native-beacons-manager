@@ -260,15 +260,17 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
     }
     callback.invoke(array);
   }
-  
+
   @ReactMethod
-  public void cleanUpRegions() {
+  public void cleanUpRegions(Callback resolve) {
     for (Region region : mBeaconManager.getRangedRegions()) {
       mBeaconManager.stopRangingBeacons(region);
     }
     for (Region region : mBeaconManager.getMonitoredRegions()) {
       mBeaconManager.stopMonitoring(region);
     }
+
+    resolve.invoke();
   }
 
   /***********************************************************************************************

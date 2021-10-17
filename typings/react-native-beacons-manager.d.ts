@@ -105,7 +105,7 @@ declare module 'react-native-beacons-manager' {
 
     getMonitoredRegions(): Promise<Array<BeaconRegion>>;
 
-    cleanUpRegions(): void;
+    cleanUpRegions(): Promise<void>;
 
     checkTransmissionSupported(): Promise<number>;
 

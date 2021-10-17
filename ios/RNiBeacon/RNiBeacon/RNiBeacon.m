@@ -229,7 +229,7 @@ RCT_EXPORT_METHOD(getRangedRegions:(RCTResponseSenderBlock)callback)
   callback(@[regionArray]);
 }
 
-RCT_EXPORT_METHOD(cleanUpRegions)
+RCT_EXPORT_METHOD(cleanUpRegions:(RCTResponseSenderBlock)callback)
 {
     for (CLBeaconRegion *region in self.locationManager.rangedRegions) {
         [self.locationManager stopRangingBeaconsInRegion:region];
@@ -237,6 +237,8 @@ RCT_EXPORT_METHOD(cleanUpRegions)
     for (CLBeaconRegion *region in self.locationManager.monitoredRegions) {
         [self.locationManager stopMonitoringForRegion:region];
     }
+    
+    callback(nil);
 }
 
 RCT_EXPORT_METHOD(startMonitoringForRegion:(NSDictionary *) dict)
