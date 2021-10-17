@@ -10,6 +10,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -164,6 +165,9 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
     String iconName = config.getString("icon");
     String title = config.getString("title");
     String activityName = config.getString("activity");
+
+    Notification.Builder builder = new Notification.Builder(mReactContext);
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationManager manager = mReactContext.getSystemService(NotificationManager.class);
 
@@ -173,8 +177,10 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
         NotificationManager.IMPORTANCE_NONE
       );
       manager.createNotificationChannel(serviceChannel);
+
+      builder.setChannelId(channelId);
     }
-    Notification.Builder builder = new Notification.Builder(mReactContext);
+
     int imageId = mReactContext.getResources().getIdentifier(iconName, "drawable", mReactContext.getPackageName());
     if (imageId != 0) {
       builder.setSmallIcon(imageId);
@@ -253,6 +259,16 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
       array.pushMap(map);
     }
     callback.invoke(array);
+  }
+  
+  @ReactMethod
+  public void cleanUpRegions() {
+    for (Region region : mBeaconManager.getRangedRegions()) {
+      mBeaconManager.stopRangingBeacons(region);
+    }
+    for (Region region : mBeaconManager.getMonitoredRegions()) {
+      mBeaconManager.stopMonitoring(region);
+    }
   }
 
   /***********************************************************************************************
