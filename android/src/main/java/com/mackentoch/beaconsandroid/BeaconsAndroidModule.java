@@ -161,7 +161,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
   public void enableForegroundServiceScanning(ReadableMap config) {
     String channelId = config.getString("channelId");
     String channelName = config.getString("channelName");
-    String iconName = config.getString("iconName");
+    String iconName = config.getString("icon");
     String title = config.getString("title");
     String activityName = config.getString("activity");
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
