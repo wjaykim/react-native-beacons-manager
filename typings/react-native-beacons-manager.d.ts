@@ -86,6 +86,14 @@ declare module 'react-native-beacons-manager' {
       period: number
     ): void;
 
+    enableForegroundServiceScanning(
+      activity: string,
+      icon: string,
+      title: string
+    ): void;
+
+    disableForegroundServiceScanning(): void;
+
     setRssiFilter(
       filterType: number,
       avgModifier: number

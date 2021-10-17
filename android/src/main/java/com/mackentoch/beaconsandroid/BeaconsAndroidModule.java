@@ -1,6 +1,9 @@
 package com.mackentoch.beaconsandroid;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -148,6 +151,36 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void setForegroundBetweenScanPeriod(int period) {
     mBeaconManager.setForegroundBetweenScanPeriod((long) period);
+  }
+
+  @ReactMethod
+  public void enableForegroundServiceScanning(String activityName, String iconName, String title) {
+    Notification.Builder builder = new Notification.Builder(mReactContext);
+    int imageId = mReactContext.getResources().getIdentifier(iconName, "drawable", mReactContext.getPackageName());
+    if (imageId != 0) {
+      builder.setSmallIcon(imageId);
+    }
+    builder.setContentTitle(title);
+    Intent intent = null;
+    try {
+      intent = new Intent(mReactContext, Class.forName(activityName));
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+    if (intent != null) {
+      PendingIntent pendingIntent = PendingIntent.getActivity(
+        mReactContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+      );
+      builder.setContentIntent(pendingIntent);
+    }
+    mBeaconManager.enableForegroundServiceScanning(builder.build(), 456);
+    mBeaconManager.setEnableScheduledScanJobs(false);
+  }
+
+  @ReactMethod
+  public void disableForegroundServiceScanning() {
+    mBeaconManager.disableForegroundServiceScanning();
+    mBeaconManager.setEnableScheduledScanJobs(true);
   }
 
   @ReactMethod
