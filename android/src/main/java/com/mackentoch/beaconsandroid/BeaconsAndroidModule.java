@@ -1,9 +1,12 @@
 package com.mackentoch.beaconsandroid;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
@@ -154,7 +158,22 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void enableForegroundServiceScanning(String activityName, String iconName, String title) {
+  public void enableForegroundServiceScanning(ReadableMap config) {
+    String channelId = config.getString("channelId");
+    String channelName = config.getString("channelName");
+    String iconName = config.getString("iconName");
+    String title = config.getString("title");
+    String activityName = config.getString("activityName");
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationManager manager = mReactContext.getSystemService(NotificationManager.class);
+
+      NotificationChannel serviceChannel = new NotificationChannel(
+        channelId,
+        channelName,
+        NotificationManager.IMPORTANCE_NONE
+      );
+      manager.createNotificationChannel(serviceChannel);
+    }
     Notification.Builder builder = new Notification.Builder(mReactContext);
     int imageId = mReactContext.getResources().getIdentifier(iconName, "drawable", mReactContext.getPackageName());
     if (imageId != 0) {

@@ -86,11 +86,13 @@ declare module 'react-native-beacons-manager' {
       period: number
     ): void;
 
-    enableForegroundServiceScanning(
+    enableForegroundServiceScanning(config: {
       activity: string,
+      channelId: string,
+      channelName: string,
       icon: string,
       title: string
-    ): void;
+    }): void;
 
     disableForegroundServiceScanning(): void;
 
