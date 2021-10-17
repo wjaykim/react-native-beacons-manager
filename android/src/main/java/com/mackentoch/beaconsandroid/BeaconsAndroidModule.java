@@ -163,7 +163,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule {
     String channelName = config.getString("channelName");
     String iconName = config.getString("iconName");
     String title = config.getString("title");
-    String activityName = config.getString("activityName");
+    String activityName = config.getString("activity");
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationManager manager = mReactContext.getSystemService(NotificationManager.class);
 
